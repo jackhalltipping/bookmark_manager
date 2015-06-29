@@ -8,4 +8,6 @@ group :test do
   gem 'capybara'
   gem 'rspec-sinatra'
   gem 'sinatra'
+  gem 'data_mapper'
+  gem 'dm-postgres-adapter'
 end
