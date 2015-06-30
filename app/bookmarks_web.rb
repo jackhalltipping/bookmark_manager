@@ -1,4 +1,9 @@
 require 'sinatra/base'
+require './app/models/link.rb'
+
+env = ENV['RACK_ENV'] || 'development'
+
+DataMapper.setup(:default, "postgres://localhost/bookmark_manager_#{env}")
 
 class BookmarksWeb < Sinatra::Base
 
@@ -9,7 +14,18 @@ class BookmarksWeb < Sinatra::Base
   end
 
   get '/links' do
-    erb :links
+    @links = Link.all
+    erb :'links/index'
+  end
+
+  post '/links' do
+    Link.create(url: params[:url], title: params[:title])
+    redirect to('/links')
+  end
+
+  get '/links/new' do
+    erb :'links/new'
+
   end
 
   # start the server if ruby file executed directly
