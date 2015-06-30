@@ -1,9 +1,6 @@
 require 'sinatra/base'
 require './app/models/link.rb'
-
-env = ENV['RACK_ENV'] || 'development'
-
-DataMapper.setup(:default, "postgres://localhost/bookmark_manager_#{env}")
+require_relative 'data_mapper_setup.rb'
 
 class BookmarksWeb < Sinatra::Base
 
