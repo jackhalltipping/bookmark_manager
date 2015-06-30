@@ -17,7 +17,7 @@ class BookmarksWeb < Sinatra::Base
 
   post '/links' do
     link = Link.new(url: params[:url], title: params[:title])
-    tag = Tag.create(name: params[:tag])
+    tag = Tag.create(name: params[:tags])
     link.tags << tag
     link.save
     redirect to('/links')
@@ -27,7 +27,7 @@ class BookmarksWeb < Sinatra::Base
     erb :'links/new'
   end
 
-  get 'tags/:name' do
+  get '/tags/:name' do
     tag = Tag.first(name: params[:name])
     @links = tag ? tag.links : []
     erb :'links/index'
