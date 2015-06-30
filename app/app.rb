@@ -1,4 +1,5 @@
 require 'sinatra/base'
+require_relative 'data_mapper_setup'
 
 class BookmarkManager < Sinatra::Base
 
@@ -15,7 +16,7 @@ class BookmarkManager < Sinatra::Base
 
   post '/links' do
     Link.create(url: params[:url], title: params[:title])
-    redirect to('/links')
+    redirect '/links'
   end
 
 
