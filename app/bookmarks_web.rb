@@ -22,7 +22,6 @@ class BookmarksWeb < Sinatra::Base
 
   get '/links/new' do
     erb :'links/new'
-
   end
 
   # start the server if ruby file executed directly
