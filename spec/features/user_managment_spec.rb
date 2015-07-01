@@ -20,7 +20,12 @@ feature 'User sign up' do
     expect { sign_up(password_confirmation: 'wrong') }.not_to change(User, :count)
     expect(current_path).to eq('/users')
     expect(status_code).to eq 200
-    expect(page).to have_content('Sorry, your passwords do not match')
+    expect(page).to have_content('Password does not match the confirmation')
   end
 
+  scenario 'with an email that is already registered' do
+    sign_up
+    expect { sign_up }.to change(User, :count).by(0)
+    expect(page).to have_content('This email is already taken')
+  end
 end
