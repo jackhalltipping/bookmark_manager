@@ -2,10 +2,12 @@ require 'sinatra/base'
 require './app/models/link'
 require 'data_mapper'
 require './app/data_mapper_setup.rb'
+require 'sinatra/flash'
 
 class App < Sinatra::Base
 
   enable :sessions
+  register Sinatra::Flash
   set :session_secret, 'super secret'
 
   get '/' do
@@ -38,15 +40,21 @@ class App < Sinatra::Base
   end
 
   get '/users/new' do
+    @user = User.new
     erb :'users/new'
   end
 
   post '/users' do
-    user = User.create(email: params[:email],
+    @user = User.create(email: params[:email],
                 password: params[:password],
                 password_confirmation: params[:password_confirmation])
-    session[:user_id] = user.id
-    redirect('/')
+    if @user.save
+      session[:user_id] = @user.id
+      redirect('/')
+    else
+      flash.now[:notice] = 'Sorry, your passwords do not match'
+      erb :'users/new'
+    end
   end
 
   def current_user

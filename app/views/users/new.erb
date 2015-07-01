@@ -1,6 +1,9 @@
+<% if flash[:notice] %>
+  <div id="notice"><%= flash[:notice] %></div>
+<% end %>
 <h1> Please Sign up </h1>
 <form action="/users" method="POST">
-  Email:<input name="email" type="text">
+  Email:<input name="email" type="text" value="<%= @user.email %>">
   Password:<input name="password" type="password">
   Password_Confirmation:<input name="password_confirmation" type="password">
   <input type='submit' value="Sign up">

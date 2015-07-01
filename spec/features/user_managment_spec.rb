@@ -4,7 +4,7 @@ feature 'User sign up' do
     expect { sign_up }.to change(User, :count).by(1)
     expect(page).to have_content('Welcome, alice@example.com')
     expect(User.first.email).to eq('alice@example.com')
-end
+  end
 
   def sign_up(email: 'alice@example.com',
               password: '12345678',
@@ -18,6 +18,9 @@ end
 
   scenario 'with a password that does not match' do
     expect { sign_up(password_confirmation: 'wrong') }.not_to change(User, :count)
+    expect(current_path).to eq('/users')
+    expect(status_code).to eq 200
+    expect(page).to have_content('Sorry, your passwords do not match')
   end
 
 end
