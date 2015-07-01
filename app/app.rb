@@ -8,6 +8,7 @@ class App < Sinatra::Base
 
   enable :sessions
   register Sinatra::Flash
+  use Rack::MethodOverride
   set :session_secret, 'super secret'
 
   get '/' do
@@ -55,6 +56,26 @@ class App < Sinatra::Base
       flash.now[:errors] = @user.errors.full_messages
       erb :'users/new'
     end
+  end
+
+  get '/sessions/new' do
+    erb :'sessions/new'
+  end
+
+  post '/sessions' do
+    user = User.authenticate(email: params[:email],
+                             password: params[:password])
+    if user
+      session[:user_id] = user.id
+      redirect to('/links')
+    else
+      flash[:errors] = ['The email or password is incorrect']
+      erb :'sessions/new'
+    end
+  end
+
+  delete '/sessions' do
+    flash[:notice] = ['goodbye!']
   end
 
   def current_user
